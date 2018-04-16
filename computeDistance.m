@@ -22,7 +22,7 @@ for t = 1:size(G, 1)
     
     %change the label of the starred node to infinity in helper matrix,
     %representing that it has been starred
-    helper(1,I) = 20000;
+    helper(1,I) = 50000;
     
     %iterate through all the nodes
     for i = 1:size(G, 1)        

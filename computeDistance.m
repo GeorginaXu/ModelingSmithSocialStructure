@@ -1,7 +1,10 @@
+%a function that takes an adjacency matrix G and a node x as inputs,
+%and return a distance_matrix representing the distance from x to all other
+%nodes in G
 function [distance_matrix] = computeDistance(G, x)
 
 %initialize distance matrix such that each entry is infinity
-distance_matrix = ones(1,size(G, 1))* 20000;
+distance_matrix = Inf(1,length(G));
 
 %initialize the starred matrix. 0 represents unstarred.
 starred_matrix = zeros(1,size(G, 1));
@@ -22,7 +25,7 @@ for t = 1:size(G, 1)
     
     %change the label of the starred node to infinity in helper matrix,
     %representing that it has been starred
-    helper(1,I) = 50000;
+    helper(1,I) = inf;
     
     %iterate through all the nodes
     for i = 1:size(G, 1)        

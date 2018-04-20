@@ -19,7 +19,7 @@ while t > 0
         %iterate through all entries in prob_matrix of u
         for v = 1:size(prob_matrix,2)
             %check if node u already formed an egde
-            if(counter ~= 1)
+            if(u<v && counter ~= 1)
                 uv_prob = prob_matrix(1,v);
                 rand_p = rand;  %generate a random number between 0 and 1
                 
@@ -27,6 +27,7 @@ while t > 0
                 %hasn't been an edge between u and v
                 if(rand_p <= uv_prob && G2(u,v) == 0)   
                     G2(u,v) = 1; 
+                    G2(v,u)=1;
                     counter = counter + 1;
                 end
             end

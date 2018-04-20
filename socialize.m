@@ -9,32 +9,18 @@ G2 = G;
 %socialize t times
 while t > 0
     %iterate over all nodes in G
-    for u = 1:size(G2,1)
+    for u = 1:length(G)
         %compute the probability of u in graph G2
-        prob_matrix = computeProbability(G2, u);
-        %initialize the counter of u because we only allow u to form 1 edge
-        %at a time
-        counter = 0;
-        
-        %iterate through all entries in prob_matrix of u
-        for v = 1:size(prob_matrix,2)
-            %check if node u already formed an egde
-            if(u<v && counter ~= 1)
-                uv_prob = prob_matrix(1,v);
-                rand_p = rand;  %generate a random number between 0 and 1
-                
-                %check if the number is under the probability and there
-                %hasn't been an edge between u and v
-                if(rand_p <= uv_prob && G2(u,v) == 0)   
-                    G2(u,v) = 1; 
-                    G2(v,u)=1;
-                    counter = counter + 1;
-                end
-            end
+        prob_matrix = computeProbability(G, u);
+        if max(prob_matrix)>0
+            v = gendist(prob_matrix,1,1);
+            G2(u,v)=1;
+            G2(v,u)=1;
         end
     end
+    G=G2;
     t = t-1;
 end
-            
+G2=G;            
             
     

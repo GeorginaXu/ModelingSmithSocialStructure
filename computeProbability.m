@@ -33,6 +33,17 @@ if strcmp(method,"distance")
     
 elseif strcmp(method,"richer")
     prob_matrix = sum(G);
+    if(all(sum(G) == 0) == 1)
+        for u = 1:length(G)
+            v = randi(length(G));
+            while v == u
+                v = randi(length(G));
+            end
+            G(u,v) = 1;
+            G(v,u) = 1;
+        end
+    end
+    prob_matrix = sum(G);
     prob_matrix(1,x) = 0;
     for u = 1:length(G)
         if(G(x,u) == 1)

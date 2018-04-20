@@ -32,9 +32,9 @@ if strcmp(method,"distance")
     end
     
 elseif strcmp(method,"richer")
-    prob_matrix = sum(G);
-    if(all(sum(G) == 0) == 1)
-        for u = 1:length(G)
+    prob_matrix = sum(G);   %prob_matrix is the degrees of all nodes
+    if(all(sum(G) == 0) == 1)   %check if all degrees are 0
+        for u = 1:length(G)     %if so, randomly give each node an edge
             v = randi(length(G));
             while v == u
                 v = randi(length(G));
@@ -43,10 +43,10 @@ elseif strcmp(method,"richer")
             G(v,u) = 1;
         end
     end
-    prob_matrix = sum(G);
-    prob_matrix(1,x) = 0;
+    prob_matrix = sum(G);   %after each node has some degree, set pro_matrix equal to all degrees of nodes
+    prob_matrix(1,x) = 0;   %set the probability for x itself to 0
     for u = 1:length(G)
-        if(G(x,u) == 1)
+        if(G(x,u) == 1)     %if there exists an edge between x and u already, set the probability to 0
             prob_matrix(1,u) = 0;
         end
     end 
@@ -54,16 +54,26 @@ elseif strcmp(method,"richer")
 elseif strcmp(method, "classyear")
     %initialize the prob_matrix of x
     prob_matrix = zeros(1,size(length(G),1));
+    %get the class year of node x
     classOfX = computeClass(x,S,J,P,F);
     for u = 1:length(G)
-        if (u == x || G(u,x) == 1)
-            prob_matrix(1,u) = 0;
+        %if u is x or there exists an edge between u and x already
+        if (u == x || G(u,x) == 1)  
+            prob_matrix(1,u) = 0;   %set the probability to 0
+        
+        %if u and x are in the same class year, set high probability
         elseif(classOfX == computeClass(u,S,J,P,F))
             prob_matrix(1,u) = 0.4;
+        
+        %if u and x are 1 class year apart
         elseif(abs(classOfX - computeClass(u,S,J,P,F)) == 1)
             prob_matrix(1,u) = 0.3;
+        
+        %if u and x are 2 class years apart
         elseif(abs(classOfX - computeClass(u,S,J,P,F)) == 2)
             prob_matrix(1,u) = 0.2;
+            
+        %if u and x are 3 class years apart
         elseif(abs(classOfX - computeClass(u,S,J,P,F)) == 3)
             prob_matrix(1,u) = 0.1;
         end

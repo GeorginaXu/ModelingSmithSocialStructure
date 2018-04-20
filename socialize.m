@@ -11,10 +11,10 @@ if strcmp(method, "distance")
     while t > 0
         %iterate over all nodes in G
         for u = 1:length(G)
-            %compute the probability of u in graph G2
+            %compute the probability of u in graph G
             prob_matrix = computeProbability(G, u, "distance");
             if max(prob_matrix)>0
-                v = gendist(prob_matrix,1,1);
+                v = gendist(prob_matrix,1,1);   %randomly pick a node from the prob_matrix distribution
                 G2(u,v)=1;
                 G2(v,u)=1;
             end
@@ -34,7 +34,7 @@ elseif strcmp(method, "richer")
             %compute the probability of u in graph G2
             prob_matrix = computeProbability(G, u, "richer");
             if max(prob_matrix)>0
-                v = gendist(prob_matrix,1,1);
+                v = gendist(prob_matrix,1,1);   %randomly pick a node from the prob_matrix distribution
                 G2(u,v)=1;
                 G2(v,u)=1;
             end
@@ -54,7 +54,7 @@ elseif strcmp(method, "classyear")
             %compute the probability of u in graph G2
             prob_matrix = computeProbability(G, u, "classyear",S,J,P,F);
             if max(prob_matrix)>0
-                v = gendist(prob_matrix,1,1);
+                v = gendist(prob_matrix,1,1);   %randomly pick a node from the prob_matrix distribution
                 G2(u,v)=1;
                 G2(v,u)=1;
             end

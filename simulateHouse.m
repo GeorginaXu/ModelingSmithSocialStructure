@@ -2,8 +2,8 @@
 %juniors, P sophomores and F first years. At each year, each person makes
 %friend with one other person in the house t times
 function[G] = simulateHouse(S,J,P,F,t,method)
-%method represents the way of socialization: could be "distance," "richer,"
-%"classyear"
+%method represents the way of socialization: could be "distance,"
+%"richer," or "classyear"
 
 size = S;
 G = zeros(S,S);  %start with G with S nodes and 0 edges

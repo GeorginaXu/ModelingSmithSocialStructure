@@ -12,16 +12,16 @@ prob_matrix = zeros(1,size(distance_matrix,2));
 
 %iterate over each entry in distance matrix
 for d = 1:size(distance_matrix,2)
+    D = distance_matrix(1, d);%the distance between x and d
     %if the distance is 0 or there is already an edge between the two nodes
-    if(distance_matrix(1,d) == 0 || G(x,d) == 1)
+    if(D == 0 || G(x,d) == 1)
         prob_matrix(1,d) = 0;       %make its probability 0
     else
-        %else, give it a certain probability based on its distance
-        D = distance_matrix(1, d);
-        if D == 1
-            p = 0.5;
-        elseif D == 2
-            p = 0.3;
+        %else, give it a certain probability based on D, (D>=2)        
+        if D == 2
+            p = 0.4;
+        elseif D == 3
+            p = 0.2;
         else
             p = 0.1;
         end

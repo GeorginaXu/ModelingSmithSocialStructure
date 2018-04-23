@@ -1,16 +1,22 @@
 %a function that implements Karger-Stein algorithm to find the min edge cut
 %of graph with adjacency matrix A with a probability of correctness p
 function lamda = mincut(A,p)
+    if ~conncomp(graph(A))
+        error('Error:  input graph is not connected.')
+    end
+    if min(sum(A))==length(A)-1%this means A is a complete graph
+        lamda=length(A)-1;
+        return
+    end
     n=length(A);
     t=log(1/(1-p))*n*(n-1)/2;
-    min=inf;
+    lamda=inf;
     for i=1:t
         temp=Karger(A);
-        if temp<min
-            min=temp;
+        if temp<lamda
+            lamda=temp;
         end
     end
-    lamda=min;
     
 % 
 % %initialize the set of supernodes to be the set of the n nodes

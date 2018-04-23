@@ -2,7 +2,9 @@
 %for each node in G, it calculates the probability matrix and choose to
 %form 1 edge for each ndoe at 1 time
 function [G2] = socialize(G,S,J,P,F,t,method)
-
+if ~issymmetric(G)
+    error('Error:  input adjacency matrix is not symmetrical.')
+end
 if strcmp(method, "distance")
     %assign graph G to output G2
     G2 = G;

@@ -38,6 +38,8 @@ public class GraphVisual {
         /** name of node that is displayed on the Node */
         private int num_student = 1;
 
+				public ArrayList<Graph.Node> node_cut = new ArrayList<Graph.Node>();
+
 
   /**
 	 *  Creates a GraphGUI of a specified Graph
@@ -53,10 +55,26 @@ public class GraphVisual {
 					System.out.println("invalid filename");
 				}
 
+				int magnitude = 620/((matrix.length/4)+1);
 				for (int node = 0; node < matrix.length; node++) {
-					Random ran = new Random();
-					int randx = ran.nextInt(600);
-					int randy = ran.nextInt(600);
+					int randx = 0;
+					int randy = 0;
+					if(node>=0 && node <matrix.length/4) {
+						randx = 20;
+						randy = 20 + node * magnitude;
+					}
+					else if (node >= matrix.length/4 && node < matrix.length/2) {
+						randx = 20 + (node-matrix.length/4) * magnitude;
+						randy = 20 + (matrix.length/4) * magnitude;
+					}
+					else if (node >= matrix.length/2 && node < matrix.length*3/4) {
+						randx = 20 + (node-matrix.length/2 + 1) * magnitude;
+						randy = 20;
+					}
+					else if (node >= matrix.length*3/4 && node < matrix.length) {
+						randx = 20 + (matrix.length/4 + 1) * magnitude;
+						randy = 20 + (node-matrix.length*3/4) * magnitude;
+					}
 					Graph.Node n = graph.addNode(Integer.toString(num_student++), new Point(randx,randy));
 				}
 
@@ -239,7 +257,17 @@ public class GraphVisual {
                     {
                         graph.breadthFirstTraversal(traversal_start);
                         traversal_start = null;
-                    }
+										// 		node_cut = graph.nodeCut();
+										// 		if(node_cut == null) {
+										// 			System.out.println("This graph doesn't have a node cut of size 3");
+										// 		}
+										// 		else {
+										// 			System.out.println("the node cuts are: ");
+										// 			node_cut.get(0).print();
+										// 			node_cut.get(1).print();
+										// 			node_cut.get(2).print();
+										// 		}
+                     }
                 }
                 else if (traversal_type.equals("dft"))
                 {

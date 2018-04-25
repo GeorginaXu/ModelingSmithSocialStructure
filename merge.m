@@ -1,4 +1,4 @@
-%u and v are two supernodes (in array) that belong to the parameter supernodes
+%merge u and v into a supernode, meaning clearing edges between nodes 
 function [supernodes,A]=merge(u,v,supernodes,A)
 
 %nodes that belong to the same group as node u

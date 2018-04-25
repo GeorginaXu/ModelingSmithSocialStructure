@@ -1,0 +1,1 @@
+dlmwrite('Chapin_dist.txt',Chapin_dist,'')

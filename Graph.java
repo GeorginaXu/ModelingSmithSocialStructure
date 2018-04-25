@@ -15,6 +15,10 @@ public class Graph<V,E> extends JComponent {
     /** master edge list */
     public ArrayList<Edge> edge_lst;
 
+    public ArrayList<Node> trial_nodelst = new ArrayList<Node>();
+
+    public ArrayList<Edge> trial_edgelst = new ArrayList<Edge>();
+
     public int seniors;
 
     public int juniors;
@@ -23,11 +27,14 @@ public class Graph<V,E> extends JComponent {
 
     public int first_years;
 
+    public boolean connected = true;
+
     /** constructor for graph class */
     public Graph(int S, int J, int P, int F)
     {
         node_lst = new ArrayList<Node>();
         edge_lst = new ArrayList<Edge>();
+
         seniors = S;
         juniors = J;
         sophomores = P;
@@ -78,6 +85,38 @@ public class Graph<V,E> extends JComponent {
         }
         node_lst.remove(node);
     }
+
+    /** remove a node from the trial graph */
+    public void removeTrialNode(Node node1, Node node2, Node node3)
+    {
+        for (Node n : this.node_lst){
+          if(n!=node1 && n!=node2 && n!=node3) {
+            this.trial_nodelst.add(n);
+          }
+        }
+        for (Edge e : this.edge_lst) {
+          this.trial_edgelst.add(e);
+        }
+
+        ArrayList<Edge> edge1 = node1.edge;
+        while(edge1.size()!=0)
+        {
+            this.trial_edgelst.remove((Edge)edge1.get(0));
+        }
+
+        ArrayList<Edge> edge2 = node2.edge;
+        while(edge2.size()!=0)
+        {
+            this.trial_edgelst.remove((Edge)edge2.get(0));
+        }
+
+        ArrayList<Edge> edge3 = node3.edge;
+        while(edge3.size()!=0)
+        {
+            this.trial_edgelst.remove((Edge)edge3.get(0));
+        }
+    }
+
 
     /** remove an edge with edge name in the graph */
     public void removeEdge(Edge e)
@@ -271,6 +310,85 @@ public class Graph<V,E> extends JComponent {
         repaint();
         return edges;
     }
+    //
+    // /**
+    // * a function that uses breadthFirstTraversal to check if the graph is connected
+    // */
+    // public boolean connected(Node start) {
+    //   HashSet<Edge> edges = new HashSet<Edge>();
+    //   Queue<Node> node_queue = new LinkedList<Node>();
+    //   for(Node n : this.trial_nodelst)
+    //   {
+    //       n.setVisited("false");
+    //   }
+    //
+    //   for(Edge e : this.trial_edgelst)
+    //   {
+    //       e.setVisited("false");
+    //   }
+    //
+    //   node_queue.add(start);
+    //   start.setVisited("true");
+    //
+    //   while(!node_queue.isEmpty())
+    //   {
+    //       Node v = node_queue.remove();
+    //       //System.out.println(v.getData().getLabel());
+    //       ArrayList<Node> neighbors = v.getNeighbors();
+    //
+    //       for(Node n : neighbors)
+    //       {
+    //           if(n.visited == false)
+    //           {
+    //               n.setVisited("true");
+    //               node_queue.add(n);
+    //
+    //               Edge e = v.edgeTo(n);
+    //               e.setVisited("true");
+    //               edges.add(e);
+    //           }
+    //       }
+    //   }
+    //
+    //   for (Node node : trial_nodelst) {
+    //       if (node.visited == false) {
+    //         this.connected = false;
+    //       }
+    //   }
+    //   System.out.println("This graph is connected? " + this.connected);
+    //   return this.connected;
+    // }
+
+    // /**
+    // * a function that permutates all possible combination of node cuts
+    // * of size n, and see if there exists a node cut of size n that disconnects the graph
+    // */
+    // public ArrayList<Node> nodeCut () {
+    //   ArrayList<Node> node_cut = new ArrayList<Node>();
+    //   for (int i = 0; i < this.node_lst.size(); i++) {
+    //     //for (int j = i; j < this.node_lst.size(); j++) {
+    //     //  for (int k = j; k < this.node_lst.size(); k++) {
+    //           Node node_i = this.node_lst.get(i);
+    //     //      Node node_j = this.node_lst.get(j);
+    //     //      Node node_k = this.node_lst.get(k);
+    //           removeTrialNode(node_i, null, null);
+    //
+    //           if(connected(this.trial_nodelst.get(0)) == false) {
+    //             node_cut.add(node_i);
+    //           //  node_cut.add(node_j);
+    //         //    node_cut.add(node_k);
+    //             return node_cut;
+    //           }
+    //     //  }
+    //   //  }
+    //   }
+    //   if (node_cut == null) {
+    //     System.out.println("there is no node cut of size 1");
+    //   }
+    //   return node_cut;
+    // }
+
+
 
     /** check the consistency of the graph */
     public void check()
@@ -428,9 +546,9 @@ public class Graph<V,E> extends JComponent {
             Point p2 = (Point)e.getTail().getData().getCoor();
             g.drawLine((int)p1.getX(), (int)p1.getY(), (int)p2.getX(), (int)p2.getY());
 
-            int mid_px = (int)(p1.getX() + p2.getX())/2;
-            int mid_py = (int)(p1.getY() + p2.getY())/2;
-            g.drawString(e.getData().toString(), mid_px, mid_py);
+            // int mid_px = (int)(p1.getX() + p2.getX())/2;
+            // int mid_py = (int)(p1.getY() + p2.getY())/2;
+            // g.drawString(e.getData().toString(), mid_px, mid_py);
         }
 
         for(int i = 0; i < this.node_lst.size(); i++)
@@ -444,40 +562,40 @@ public class Graph<V,E> extends JComponent {
                 g.setColor(Color.red);
                 int x = (int)center.getX();
                 int y = (int)center.getY();
-                g.fillOval(x, y, 5, 5);
+                g.fillOval(x, y, 10, 10);
             }
             else if ((n.visited == false) && (i >= this.seniors) && (i < this.seniors+this.juniors))
             {
                 g.setColor(Color.green);
                 int x = (int)center.getX();
                 int y = (int)center.getY();
-                g.fillOval(x, y, 5, 5);
+                g.fillOval(x, y, 10, 10);
             }
-            else if ((n.visited == false) && (i > (this.seniors+this.juniors)) && (i < this.seniors+this.juniors+this.sophomores))
+            else if ((n.visited == false) && (i >= (this.seniors+this.juniors)) && (i < this.seniors+this.juniors+this.sophomores))
             {
                 g.setColor(Color.yellow);
                 int x = (int)center.getX();
                 int y = (int)center.getY();
-                g.fillOval(x, y, 5, 5);
+                g.fillOval(x, y, 10, 10);
             }
             else if (n.visited == false && (i >= this.seniors+this.juniors+this.sophomores) && (i < this.seniors+this.juniors+this.sophomores+this.first_years))
             {
                 g.setColor(Color.blue);
                 int x = (int)center.getX();
                 int y = (int)center.getY();
-                g.fillOval(x, y, 5, 5);
+                g.fillOval(x, y, 10, 10);
             }
             else if(n.visited != false)
             {
                 g.setColor(Color.pink);
                 int x = (int)center.getX();
                 int y = (int)center.getY();
-                g.fillOval(x, y, 5, 5);
+                g.fillOval(x, y, 10, 10);
             }
 
             g.setColor(Color.black);
             String s = "("+center.getX()+","+center.getY()+")";
-            g.drawString(label+"  "+s, (int)center.getX()-5, (int)center.getY());
+            g.drawString(label, (int)center.getX()-5, (int)center.getY());
         }
     }
 
